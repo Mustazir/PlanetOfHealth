@@ -7,7 +7,6 @@ const admin = require('firebase-admin');
 const app = express();
 const port = process.env.PORT || 5000;
 
-const cors = require('cors');
 
 // allow your frontend origin
 app.use(cors({
