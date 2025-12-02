@@ -9,9 +9,20 @@ const port = process.env.PORT || 5000;
 
 
 // allow your frontend origin
+const allowedOrigins = [
+  'https://plante-of-health-pharmacy.web.app/dashboard',  // client
+  'hhttps://planet-of-health-pharmacy.web.app/'    // admin
+];
+
 app.use(cors({
-  origin: 'http://localhost:5174',
-  methods: ['GET', 'POST', 'PUT', 'DELETE']
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true); // allow requests like Postman or server-to-server
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true); // origin allowed
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
 }));
 
 app.use(express.json({ limit: '10mb' }));
