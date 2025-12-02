@@ -7,7 +7,14 @@ const admin = require('firebase-admin');
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use(cors())
+const cors = require('cors');
+
+// allow your frontend origin
+app.use(cors({
+  origin: 'http://localhost:5174',
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
+}));
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
@@ -1370,14 +1377,14 @@ async function run() {
       res.send(result);
     });
 
-    app.get('/medicine_count',async(req,res)=>{
-      const result=await medicinesCollections.estimatedDocumentCount()
-      res.send({count:result})
+    app.get('/medicine_count', async (req, res) => {
+      const result = await medicinesCollections.estimatedDocumentCount()
+      res.send({ count: result })
     })
-    app.get('/pagenition_medicines',async(req,res)=>{
-      const skip=parseInt(req.query.skip)
+    app.get('/pagenition_medicines', async (req, res) => {
+      const skip = parseInt(req.query.skip)
 
-      const result=await medicinesCollections.find().skip(skip*6).limit(6).toArray()
+      const result = await medicinesCollections.find().skip(skip * 6).limit(6).toArray()
       console.log(skip)
       res.send(result)
     })
